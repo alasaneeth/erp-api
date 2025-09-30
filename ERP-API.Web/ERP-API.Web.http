@@ -1,0 +1,6 @@
+@ERP_API.Web_HostAddress = http://localhost:5039
+
+GET {{ERP_API.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
