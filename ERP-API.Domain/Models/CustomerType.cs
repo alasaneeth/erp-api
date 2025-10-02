@@ -14,8 +14,6 @@ namespace ERP_API.Domain.Models
       
         [Required]
         public string Name { get; set; }
-        [Required]
-        public double InvoiceAmount { get; set; }
 
     }
 }
