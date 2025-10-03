@@ -138,5 +138,41 @@ namespace ERP_API.Web.Controllers
 
             return Ok(_response);
         }
+
+        [HttpDelete]
+        public async Task<ActionResult<APIResponse>> Delete(int id)
+        {
+            try
+            {
+                if(id == 0)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.DisplayMessage = CommonMessage.DeleteOperationFailed;
+                    return Ok(_response);
+                }
+
+                var customer = _customerService.GetByIdAsync(id);
+
+                if (customer == null) 
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.DisplayMessage = CommonMessage.DeleteOperationFailed;
+                    return Ok(_response);
+                }
+
+                await _customerService.DeleteAsync(id);
+
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+                _response.DisplayMessage = CommonMessage.DeleteOperationSuccess;
+            }
+            catch (Exception) 
+            {
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.DisplayMessage = CommonMessage.DeleteOperationFailed;
+                _response.AddError(CommonMessage.SystemError);
+            }
+            return Ok(_response);
+        }
     }
 }
