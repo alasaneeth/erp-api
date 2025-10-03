@@ -40,7 +40,7 @@ namespace ERP_API.Application.Services
 
         public async Task<IEnumerable<CustomerDto>> GetAllAsync()
         {
-            var customers = await _repository.GetAllAsync();
+            var customers = await _repository.GetAllCustomerAsync();
             return _mapper.Map<List<CustomerDto>>(customers);
         }
 
