@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ERP-API.Application\ERP-API.Application.csproj" />
     <ProjectReference Include="..\ERP-API.Domain\ERP-API.Domain.csproj" />
   </ItemGroup>
 

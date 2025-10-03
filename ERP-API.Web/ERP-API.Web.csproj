@@ -27,8 +27,4 @@
     <ProjectReference Include="..\ERP-API.Infrastucture\ERP-API.Infrastucture.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
