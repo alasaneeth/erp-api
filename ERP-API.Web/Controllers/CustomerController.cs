@@ -31,13 +31,42 @@ namespace ERP_API.Web.Controllers
                 _response.IsSuccess = true;
                 _response.Result = customers;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
                 _response.AddError(CommenMessage.SystemError);
             }
             return Ok(_response);
+        }
+
+        [HttpGet]
+        [Route("Details")]
+        public async Task<ActionResult<APIResponse>> Get(int id)
+        {
+            try
+            {
+                var customer = await  _customerService.GetByIdAsync(id);
+
+                if (customer == null) 
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.IsSuccess = false;
+                    _response.DisaplayMessage = CommenMessage.RecordNotFound;
+                    return Ok(_response);
+                }
+
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                _response.Result = customer;
+            }
+            catch (Exception) 
+            {
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.AddError(CommenMessage.SystemError);
+            }
+
+            return Ok(_response);   
         }
 
         [HttpPost]
