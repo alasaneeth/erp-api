@@ -1,4 +1,6 @@
+using ERP_API.Application;
 using ERP_API.Domain.Common;
+using ERP_API.Infrastucture;
 using ERP_API.Infrastucture.DbContexts;
 using ERP_API.Infrastucture.Seedings;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices();
 
 builder.Services.AddCors(options =>
 {
