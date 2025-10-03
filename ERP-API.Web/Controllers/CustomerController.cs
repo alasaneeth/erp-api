@@ -20,6 +20,26 @@ namespace ERP_API.Web.Controllers
             _response = new APIResponse();
         }
 
+
+        [HttpGet]
+        public async Task<ActionResult<APIResponse>> Get()
+        {
+            try
+            {
+                var customers = await _customerService.GetAllAsync();
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                _response.Result = customers;
+            }
+            catch (Exception ex)
+            {
+                _response.StatusCode = HttpStatusCode.BadRequest;
+                _response.IsSuccess = false;
+                _response.AddError(CommenMessage.SystemError);
+            }
+            return Ok(_response);
+        }
+
         [HttpPost]
         public async Task<ActionResult<APIResponse>> Create([FromBody] CreateCustomerDto dto)
         {

@@ -19,7 +19,7 @@ namespace ERP_API.Infrastucture.Repositories
             
         }
 
-        public async Task<List<Customer>> GetAllProductAsync()
+        public async Task<List<Customer>> GetAllCustomerAsync()
         {
             return await _dbContext.Customers.Include(x=>x.CustomerType).AsNoTracking().ToListAsync();
         }

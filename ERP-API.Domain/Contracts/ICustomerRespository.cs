@@ -9,7 +9,7 @@ namespace ERP_API.Domain.Contracts
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        Task<List<Customer>> GetAllProductAsync();
+        Task<List<Customer>> GetAllCustomerAsync();
 
         Task<Customer> GetDetailsAsync(int id);
 
