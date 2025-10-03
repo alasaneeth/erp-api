@@ -1,6 +1,7 @@
 ﻿using ERP_API.Application.ApplicationConstant;
 using ERP_API.Application.Common;
 using ERP_API.Application.DTO.CustomerDto;
+using ERP_API.Application.InputModel;
 using ERP_API.Application.Services.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,27 @@ namespace ERP_API.Web.Controllers
                 _response.AddError(CommonMessage.SystemError);
             }
             return Ok(_response);
+        }
+
+        [HttpPost]
+        [Route("GetPagination")]
+        public async Task<ActionResult<APIResponse>> GetPagination(PaginationInputModel pagination)
+        {
+            try
+            {
+                var customers = await _customerService.GetPagination(pagination);
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                _response.Result = customers;
+            }
+            catch (Exception)
+            {
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return Ok(_response);
+
         }
 
         [HttpGet]

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using ERP_API.Application.DTO.CustomerDto;
+using ERP_API.Application.InputModel;
 using ERP_API.Application.Services.Interface;
+using ERP_API.Application.ViewModels;
 using ERP_API.Domain.Contracts;
 using ERP_API.Domain.Models;
 using System;
@@ -16,12 +18,14 @@ namespace ERP_API.Application.Services
     public class CustomerService : ICustomerService
     {
         private readonly ICustomerRepository _repository;
+        private readonly IPaginationService<CustomerDto,Customer> _pagination;
         private readonly IMapper _mapper;
 
-        public CustomerService(ICustomerRepository customerRepostory, IMapper mapper)
+        public CustomerService(ICustomerRepository customerRepostory, IMapper mapper, IPaginationService<CustomerDto, Customer> pagination)
         {
             _repository = customerRepostory;
             _mapper = mapper;
+            _pagination = pagination;
         }
 
         public async Task<CustomerDto> CreateAsync(CreateCustomerDto createCustomerDto)
@@ -49,6 +53,14 @@ namespace ERP_API.Application.Services
         {
             var customer = await _repository.GetDetailsAsync(id);
             return _mapper.Map<CustomerDto>(customer);
+        }
+
+        public async Task<PaginationVM<CustomerDto>> GetPagination(PaginationInputModel pagination)
+        {
+            var source = await _repository.GetAllCustomerAsync();
+            var result = _pagination.GetPagination(source, pagination); 
+
+            return result;
         }
 
         public async Task UpdateAsync(UpdateCustomerDto updateCustomerDto)

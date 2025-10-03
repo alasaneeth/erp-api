@@ -16,6 +16,7 @@ namespace ERP_API.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services) 
         {
             services.AddAutoMapper(typeof(MappingProfile));
+            services.AddScoped(typeof(IPaginationService<,>), typeof(PaginationService<,>));
             services.AddScoped<ICustomerService, CustomerService>();
             return services;
         }
