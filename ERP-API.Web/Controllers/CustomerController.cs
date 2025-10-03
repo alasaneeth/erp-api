@@ -35,7 +35,7 @@ namespace ERP_API.Web.Controllers
             {
                 _response.StatusCode = HttpStatusCode.BadRequest;
                 _response.IsSuccess = false;
-                _response.AddError(CommenMessage.SystemError);
+                _response.AddError(CommonMessage.SystemError);
             }
             return Ok(_response);
         }
@@ -46,13 +46,13 @@ namespace ERP_API.Web.Controllers
         {
             try
             {
-                var customer = await  _customerService.GetByIdAsync(id);
+                var customer = await _customerService.GetByIdAsync(id);
 
-                if (customer == null) 
+                if (customer == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
                     _response.IsSuccess = false;
-                    _response.DisaplayMessage = CommenMessage.RecordNotFound;
+                    _response.DisplayMessage = CommonMessage.RecordNotFound;
                     return Ok(_response);
                 }
 
@@ -60,13 +60,13 @@ namespace ERP_API.Web.Controllers
                 _response.IsSuccess = true;
                 _response.Result = customer;
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.AddError(CommenMessage.SystemError);
+                _response.AddError(CommonMessage.SystemError);
             }
 
-            return Ok(_response);   
+            return Ok(_response);
         }
 
         [HttpPost]
@@ -77,7 +77,7 @@ namespace ERP_API.Web.Controllers
                 if (!ModelState.IsValid)
                 {
                     _response.StatusCode = HttpStatusCode.BadRequest;
-                    _response.DisaplayMessage = CommenMessage.CreateOperationFailed;
+                    _response.DisplayMessage = CommonMessage.CreateOperationFailed;
                     _response.AddError(ModelState.ToString());
                     return Ok(_response);
 
@@ -86,18 +86,57 @@ namespace ERP_API.Web.Controllers
                 var entity = await _customerService.CreateAsync(dto);
                 _response.StatusCode = HttpStatusCode.Created;
                 _response.IsSuccess = true;
-                _response.DisaplayMessage = CommenMessage.CreateOperationSuccess;
+                _response.DisplayMessage = CommonMessage.CreateOperationSuccess;
                 _response.Result = entity;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 _response.StatusCode = HttpStatusCode.InternalServerError;
-                _response.DisaplayMessage = CommenMessage.CreateOperationFailed;
-                _response.AddError(CommenMessage.SystemError);
+                _response.DisplayMessage = CommonMessage.CreateOperationFailed;
+                _response.AddError(CommonMessage.SystemError);
             }
 
             return Ok(_response);
 
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<APIResponse>> Update([FromBody] UpdateCustomerDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _response.StatusCode = HttpStatusCode.BadRequest;
+                    _response.DisplayMessage = CommonMessage.UpdateOperationFailed;
+                    _response.AddError(ModelState.ToString());
+                    return Ok(_response);
+                }
+
+                var customer = await _customerService.GetByIdAsync(dto.Id);
+
+                if (customer == null)
+                {
+                    _response.StatusCode = HttpStatusCode.NotFound;
+                    _response.DisplayMessage = CommonMessage.UpdateOperationFailed;
+                    return Ok(_response);
+                }
+
+                await _customerService.UpdateAsync(dto);
+
+
+                _response.StatusCode = HttpStatusCode.NoContent;
+                _response.IsSuccess = true;
+                _response.DisplayMessage = CommonMessage.UpdateOperationSuccess;
+            }
+            catch (Exception)
+            {
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.DisplayMessage = CommonMessage.UpdateOperationFailed;
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return Ok(_response);
         }
     }
 }
