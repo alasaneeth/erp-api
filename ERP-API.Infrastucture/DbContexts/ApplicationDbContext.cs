@@ -19,5 +19,6 @@ namespace ERP_API.Infrastucture.DbContexts
         }
 
         public DbSet<CustomerType> CustomerTypes { get; set; }
+        public DbSet<Customer> Customers { get; set; }
     }
 }
