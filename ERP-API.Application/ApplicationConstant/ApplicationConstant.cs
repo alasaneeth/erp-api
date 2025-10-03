@@ -9,7 +9,7 @@ namespace ERP_API.Application.ApplicationConstant
     public class ApplicationConstant
     {
     }
-    public class CommenMessage
+    public class CommonMessage
     {
         public const string RegistrationSuccess = "Registration Success";
         public const string RegistrationFalid = "Registration Faild";
