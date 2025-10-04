@@ -49,15 +49,30 @@ namespace ERP_API.Application.Services
             return _mapper.Map<List<CustomerDto>>(customers);
         }
 
-        public async Task<IEnumerable<CustomerDto>> GetAllByFilter(int? CustomerTypeId)
+        public async Task<IEnumerable<CustomerDto>> GetAllByFilter(int? CustomerTypeId = null, string CustomCode = null, string Name = null, string Tel = null)
         {
             var data = await _repository.GetAllCustomerAsync();
 
             IEnumerable<Customer> query = data;
 
-            if(CustomerTypeId > 0)
+            if (CustomerTypeId != null)
             {
-                query = query.Where(x=>x.CustomerType.Id == CustomerTypeId);
+                query = query.Where(x => x.CustomerType.Id == CustomerTypeId);
+            }
+
+            if (!string.IsNullOrEmpty(CustomCode))
+            {
+                query = query.Where(x => x.CustomCode == CustomCode);
+            }
+
+            if (!string.IsNullOrEmpty(Name))
+            {
+                query = query.Where(x => x.Name.Contains(Name));
+            }
+
+            if (!string.IsNullOrEmpty(Tel))
+            {
+                query = query.Where(x => x.Tel.Contains(Tel));
             }
 
             var result = _mapper.Map<List<CustomerDto>>(query);

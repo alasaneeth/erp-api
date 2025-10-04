@@ -94,11 +94,11 @@ namespace ERP_API.Web.Controllers
         [HttpGet]
         [Route("Filter")]
 
-        public async Task<ActionResult<APIResponse>> GetFilter(int CustomerTypeId)
+        public async Task<ActionResult<APIResponse>> GetFilter(int? CustomerTypeId = null, string? CustomeCode = null, string? Name = null, string? Tel = null)
         {
             try
             {
-                var customers = await _customerService.GetAllByFilter(CustomerTypeId);
+                var customers = await _customerService.GetAllByFilter(CustomerTypeId, CustomeCode,Name,Tel);
                 _response.StatusCode = HttpStatusCode.OK;
                 _response.IsSuccess = true;
                 _response.Result = customers;
