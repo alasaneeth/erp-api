@@ -91,6 +91,27 @@ namespace ERP_API.Web.Controllers
             return Ok(_response);
         }
 
+        [HttpGet]
+        [Route("Filter")]
+
+        public async Task<ActionResult<APIResponse>> GetFilter(int CustomerTypeId)
+        {
+            try
+            {
+                var customers = await _customerService.GetAllByFilter(CustomerTypeId);
+                _response.StatusCode = HttpStatusCode.OK;
+                _response.IsSuccess = true;
+                _response.Result = customers;
+            }
+            catch (Exception)
+            {
+                _response.StatusCode = HttpStatusCode.InternalServerError;
+                _response.AddError(CommonMessage.SystemError);
+            }
+
+            return Ok(_response);
+        }
+
         [HttpPost]
         public async Task<ActionResult<APIResponse>> Create([FromBody] CreateCustomerDto dto)
         {

@@ -14,6 +14,7 @@ namespace ERP_API.Application.Services.Interface
         Task<PaginationVM<CustomerDto>> GetPagination(PaginationInputModel pagination);
         Task<CustomerDto> GetByIdAsync(int id);
         Task<IEnumerable<CustomerDto>> GetAllAsync();
+        Task<IEnumerable<CustomerDto>> GetAllByFilter(int? CustomerTypeId);
         Task<CustomerDto> CreateAsync(CreateCustomerDto createCustomerDto);
         Task UpdateAsync(UpdateCustomerDto updateCustomerDto);
         Task DeleteAsync(int id);

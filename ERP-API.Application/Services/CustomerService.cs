@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,20 @@ namespace ERP_API.Application.Services
             return _mapper.Map<List<CustomerDto>>(customers);
         }
 
+        public async Task<IEnumerable<CustomerDto>> GetAllByFilter(int? CustomerTypeId)
+        {
+            var data = await _repository.GetAllCustomerAsync();
+
+            IEnumerable<Customer> query = data;
+
+            if(CustomerTypeId > 0)
+            {
+                query = query.Where(x=>x.CustomerType.Id == CustomerTypeId);
+            }
+
+            var result = _mapper.Map<List<CustomerDto>>(query);
+            return result;
+        }
 
         public async Task<CustomerDto> GetByIdAsync(int id)
         {
